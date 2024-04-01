@@ -1,0 +1,47 @@
+{
+    "name": "Google Sheets SDK",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "[python]": {
+                    "diffEditor.ignoreTrimWhitespace": false,
+                    "editor.formatOnType": true,
+                    "editor.wordBasedSuggestions": "off",
+                    "editor.inlineSuggest.suppressSuggestions": false,
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit"
+                    }
+                },
+                "python.analysis.typeCheckingMode": "standard",
+                "python.analysis.autoImportCompletions": true
+            },
+            "extensions": [
+                "ms-python.python",
+                "christian-kohler.path-intellisense",
+                "VisualStudioExptTeam.vscodeintellicode",
+                "VisualStudioExptTeam.vscodeintellicode-completions",
+                "charliermarsh.ruff"
+            ]
+        }
+    },
+    "build": {
+        "context": "..",
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--env-file=envs/development.env",
+        "--name=google-sheets-sdk-container-development"
+    ],
+    "postCreateCommand": [
+        "poetry",
+        "install"
+    ],
+    "mounts": [
+        {
+            "source": "${localEnv:HOME}/.ssh",
+            "target": "/home/vscode/.ssh",
+            "type": "bind"
+        }
+    ]
+}

@@ -1,0 +1,4 @@
+envs/*
+!envs/template.env
+examples/
+dist/
