@@ -1,22 +1,18 @@
 import time as t
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any, ClassVar
 
-from httpx import HTTPStatusError
+from httpx import AsyncClient, HTTPStatusError
 from jose import jwt
 
+from google_sheets_sdk import Settings
 from google_sheets_sdk.helpers import check_token_expiration
 from google_sheets_sdk.schemas import TokenData
-from google_sheets_sdk.settings import get_settings
-
-if TYPE_CHECKING:
-    from google_sheets_sdk import Settings
-    from httpx import AsyncClient
 
 
 @dataclass
 class Client:
-    settings: ClassVar["Settings"] = get_settings()
+    settings: ClassVar["Settings"] = Settings()  # type: ignore
     base_url: ClassVar[str] = "https://sheets.googleapis.com/"
     token_data: ClassVar[TokenData] = TokenData(
         iss=settings.CLIENT_EMAIL,
