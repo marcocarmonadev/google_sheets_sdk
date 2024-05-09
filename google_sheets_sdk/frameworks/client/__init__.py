@@ -17,15 +17,15 @@ class BatchUpdateValuesResponse(BaseModel):
         alias="spreadsheetId",
     )
     total_updated_rows: int = Field(
-        ...,
+        default=0,
         alias="totalUpdatedRows",
     )
     total_updated_columns: int = Field(
-        ...,
+        default=0,
         alias="totalUpdatedColumns",
     )
     total_updated_cells: int = Field(
-        ...,
+        default=0,
         alias="totalUpdatedCells",
     )
     total_updated_sheets: int = Field(
