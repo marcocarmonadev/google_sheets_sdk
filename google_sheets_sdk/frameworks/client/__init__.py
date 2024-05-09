@@ -1,10 +1,11 @@
 from dataclasses import InitVar, dataclass, field
 from typing import TYPE_CHECKING, ClassVar
 
-from entities import Settings, Sheet, Token
-from entities import spreadsheet as spreadsheet_entity
 from pydantic import BaseModel
 from pydantic.fields import Field
+
+from google_sheets_sdk.entities import Settings, Sheet, Token
+from google_sheets_sdk.entities import spreadsheet as spreadsheet_entity
 
 if TYPE_CHECKING:
     from httpx import AsyncClient, HTTPStatusError
