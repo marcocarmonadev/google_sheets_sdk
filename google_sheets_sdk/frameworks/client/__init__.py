@@ -1,37 +1,11 @@
 from dataclasses import InitVar, dataclass, field
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
-from pydantic import BaseModel
-from pydantic.fields import Field
 
-from google_sheets_sdk.entities import Settings, Sheet, Token
 from google_sheets_sdk.entities import spreadsheet as spreadsheet_entity
+from google_sheets_sdk.entities import Settings, Sheet, Token
 
-if TYPE_CHECKING:
-    from httpx import AsyncClient, HTTPStatusError
-
-
-class BatchUpdateValuesResponse(BaseModel):
-    spreadsheet_id: str = Field(
-        ...,
-        alias="spreadsheetId",
-    )
-    total_updated_rows: int = Field(
-        default=0,
-        alias="totalUpdatedRows",
-    )
-    total_updated_columns: int = Field(
-        default=0,
-        alias="totalUpdatedColumns",
-    )
-    total_updated_cells: int = Field(
-        default=0,
-        alias="totalUpdatedCells",
-    )
-    total_updated_sheets: int = Field(
-        ...,
-        alias="totalUpdatedSheets",
-    )
+from httpx import AsyncClient, HTTPStatusError
 
 
 @dataclass
@@ -79,7 +53,7 @@ class Client:
         self,
         spreadsheet_id: spreadsheet_entity.Id,
         sheets: list[Sheet],
-    ) -> BatchUpdateValuesResponse:
+    ) -> spreadsheet_entity.BatchUpdateValuesResponse:
         try:
             response = await self._http_client.post(
                 url=f"{self._base_url}v4/spreadsheets/{spreadsheet_id}/values:batchUpdate",
@@ -100,4 +74,4 @@ class Client:
         except HTTPStatusError as exc:
             raise exc
         else:
-            return BatchUpdateValuesResponse(**response.json())
+            return spreadsheet_entity.BatchUpdateValuesResponse(**response.json())

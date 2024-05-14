@@ -2,3 +2,4 @@ envs/*
 !envs/template.env
 examples/
 dist/
+google_sheets_sdk/private_example.py
