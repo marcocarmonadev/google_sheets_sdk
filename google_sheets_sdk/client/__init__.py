@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass, field
+from dataclasses import dataclass, field
 from typing import ClassVar
 
 from httpx import AsyncClient, HTTPStatusError
@@ -10,22 +10,22 @@ from google_sheets_sdk.core import Settings, models
 class Client:
     _BASE_URL: ClassVar[str] = "https://sheets.googleapis.com/"
 
-    _http_client: AsyncClient
+    http_client: AsyncClient
+    settings: Settings = field(
+        default_factory=Settings,  # type: ignore
+    )
+
     _token: models.Token = field(
         init=False,
     )
-    settings: InitVar[Settings]
 
-    def __post_init__(
-        self,
-        settings: Settings,
-    ):
+    def __post_init__(self):
         self._token = models.Token(
-            email=settings.CLIENT_EMAIL,
+            email=self.settings.CLIENT_EMAIL,
             base_url=self._BASE_URL,
-            scope=settings.SCOPE.unicode_string(),
-            private_key=settings.PRIVATE_KEY.replace(r"\n", "\n"),
-            private_key_id=settings.PRIVATE_KEY_ID,
+            scope=self.settings.SCOPE.unicode_string(),
+            private_key=self.settings.PRIVATE_KEY.replace(r"\n", "\n"),
+            private_key_id=self.settings.PRIVATE_KEY_ID,
         )
 
     async def batch_clear_values(
@@ -34,7 +34,7 @@ class Client:
         ranges: list[models.Range],
     ) -> None:
         try:
-            response = await self._http_client.post(
+            response = await self.http_client.post(
                 url=f"{self._BASE_URL}v4/spreadsheets/{spreadsheet_id}/values:batchClear",
                 json={
                     "ranges": ranges,
@@ -53,7 +53,7 @@ class Client:
         sheets: list[models.Sheet],
     ) -> models.BatchUpdateValuesResponse:
         try:
-            response = await self._http_client.post(
+            response = await self.http_client.post(
                 url=f"{self._BASE_URL}v4/spreadsheets/{spreadsheet_id}/values:batchUpdate",
                 json={
                     "valueInputOption": "USER_ENTERED",

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "google-sheets-sdk"
-version = "0.1.9"
+version = "0.2.0"
 description = ""
 authors = ["Marco Carmona <marcocarmonapy@outlook.com>"]
 readme = "README.md"
