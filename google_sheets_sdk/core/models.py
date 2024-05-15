@@ -4,23 +4,10 @@ from dataclasses import InitVar, dataclass, field
 from jose import jwt
 from pydantic import BaseModel
 from pydantic.fields import Field
-from pydantic.networks import EmailStr, HttpUrl
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
 type Range = str
 type Value = str | int | float
 type SpreadsheetId = str
-
-
-class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_prefix="GOOGLE_SHEETS_",
-    )
-
-    PRIVATE_KEY_ID: str
-    PRIVATE_KEY: str
-    CLIENT_EMAIL: EmailStr
-    SCOPE: HttpUrl
 
 
 class Sheet(BaseModel):

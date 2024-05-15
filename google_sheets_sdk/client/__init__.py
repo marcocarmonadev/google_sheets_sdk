@@ -3,7 +3,7 @@ from typing import ClassVar
 
 from httpx import AsyncClient, HTTPStatusError
 
-from google_sheets_sdk.core import models
+from google_sheets_sdk.core import Settings, models
 
 
 @dataclass
@@ -14,11 +14,11 @@ class Client:
     _token: models.Token = field(
         init=False,
     )
-    settings: InitVar[models.Settings]
+    settings: InitVar[Settings]
 
     def __post_init__(
         self,
-        settings: models.Settings,
+        settings: Settings,
     ):
         self._token = models.Token(
             email=settings.CLIENT_EMAIL,
