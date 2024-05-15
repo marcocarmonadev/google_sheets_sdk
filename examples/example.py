@@ -2,17 +2,12 @@ import asyncio
 
 import httpx
 
-import google_sheets
-import google_sheets.core
-import google_sheets.core.models
+from google_sheets_sdk import GoogleSheetClient
 
 
 async def main():
     async with httpx.AsyncClient() as http_client:
-        client = google_sheets.Client(
-            http_client,
-            settings=google_sheets.core.models.Settings(),  # type: ignore
-        )
+        google_sheet_client = GoogleSheetClient(http_client)
 
 
 if __name__ == "__main__":
