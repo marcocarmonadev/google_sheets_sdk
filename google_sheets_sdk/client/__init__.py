@@ -3,7 +3,7 @@ from typing import ClassVar
 
 from httpx import AsyncClient, HTTPStatusError
 
-from google_sheets.core import models
+from google_sheets_sdk.core import models
 
 
 @dataclass
