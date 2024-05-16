@@ -11,7 +11,10 @@ type SpreadsheetId = str
 
 
 class Sheet(BaseModel):
-    range: Range
+    range_: Range = Field(
+        ...,
+        serialization_alias="range",
+    )
     values: list[list[Value]]
 
 

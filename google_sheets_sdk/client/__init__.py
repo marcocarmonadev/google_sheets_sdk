@@ -60,6 +60,7 @@ class Client:
                     "data": [
                         sheet.model_dump(
                             mode="json",
+                            by_alias=True,
                         )
                         for sheet in sheets
                     ],
