@@ -1,4 +1,4 @@
 envs/*
 !envs/template.env
 dist/
-examples/private_example.py
+example/private_example.py
