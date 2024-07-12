@@ -2,6 +2,7 @@
 name = "google-sheets-sdk"
 version = "0.2.1"
 description = ""
+license = "MIT"
 authors = ["Marco Carmona <marcocarmonapy@outlook.com>"]
 readme = "README.md"
 
@@ -10,7 +11,7 @@ python = "^3.10"
 httpx = "^0.27.0"
 pydantic-settings = "^2.2.1"
 python-jose = "^3.3.0"
-pydantic = {extras = ["email"], version = "^2.6.4"}
+pydantic = { extras = ["email"], version = "^2.6.4" }
 
 
 [build-system]
