@@ -21,7 +21,7 @@
             ]
         }
     },
-    "image": "mcr.microsoft.com/devcontainers/python:1-3.10",
+    "image": "mcr.microsoft.com/devcontainers/python:3.10",
     "runArgs": [
         "--name=google-sheets-sdk-devcontainer"
     ],
