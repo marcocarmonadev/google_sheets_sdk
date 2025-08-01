@@ -3,7 +3,7 @@ name = "google-sheets-sdk"
 version = "0.2.2"
 description = ""
 license = "MIT"
-authors = ["Marco Carmona <marcocarmonapy@outlook.com>"]
+authors = ["Marco Carmona <marcocarmonadev@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
