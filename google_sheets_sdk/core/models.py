@@ -1,6 +1,7 @@
 import time as t
 from dataclasses import InitVar, dataclass, field
 
+import httpx
 from jose import jwt
 from pydantic import BaseModel
 from pydantic.fields import Field
@@ -19,9 +20,8 @@ class Sheet(BaseModel):
 
 
 @dataclass
-class Token:
+class TokenData:
     email: InitVar[str]
-    base_url: InitVar[str]
 
     scope: str
     private_key: str
@@ -35,6 +35,7 @@ class Token:
     )
     _aud: str = field(
         init=False,
+        default="https://oauth2.googleapis.com/token",
     )
     _iat: float = field(
         init=False,
@@ -46,10 +47,8 @@ class Token:
     def __post_init__(
         self,
         email: str,
-        base_url: str,
     ):
         self._iss = self._sub = email
-        self._aud = base_url
         self._refresh_expiration()
 
     def _as_dict(self):
@@ -81,6 +80,28 @@ class Token:
             },
             algorithm="RS256",
         )
+
+    async def generate(
+        self,
+        http_client: httpx.AsyncClient,
+    ):
+        try:
+            response = await http_client.post(
+                url="https://oauth2.googleapis.com/token",
+                data={
+                    "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                    "assertion": self.encoded,
+                },
+                headers={
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            )
+            response.raise_for_status()
+        except httpx.HTTPStatusError:
+            raise
+        else:
+            json_response = response.json()
+            return json_response["access_token"]
 
 
 class UpdateValuesResponse(BaseModel):

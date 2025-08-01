@@ -15,14 +15,13 @@ class Client:
         default_factory=Settings,  # type: ignore
     )
 
-    _token: models.Token = field(
+    _token_data: models.TokenData = field(
         init=False,
     )
 
     def __post_init__(self):
-        self._token = models.Token(
+        self._token_data = models.TokenData(
             email=self.settings.CLIENT_EMAIL,
-            base_url=self._BASE_URL,
             scope=self.settings.SCOPE.unicode_string(),
             private_key=self.settings.PRIVATE_KEY,
             private_key_id=self.settings.PRIVATE_KEY_ID,
@@ -40,7 +39,7 @@ class Client:
                     "ranges": ranges,
                 },
                 headers={
-                    "Authorization": f"Bearer {self._token.encoded}",
+                    "Authorization": f"Bearer {await self._token_data.generate(self.http_client)}",
                 },
             )
             response.raise_for_status()
@@ -66,7 +65,7 @@ class Client:
                     ],
                 },
                 headers={
-                    "Authorization": f"Bearer {self._token.encoded}",
+                    "Authorization": f"Bearer {await self._token_data.generate(self.http_client)}",
                 },
             )
             response.raise_for_status()
