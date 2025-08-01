@@ -8,7 +8,7 @@ from google_sheets_sdk.core import Settings, models
 
 @dataclass
 class Client:
-    _BASE_URL: ClassVar[str] = "https://sheets.googleapis.com/"
+    _BASE_URL: ClassVar[str] = "https://sheets.googleapis.com"
 
     http_client: AsyncClient
     settings: Settings = field(
@@ -24,7 +24,7 @@ class Client:
             email=self.settings.CLIENT_EMAIL,
             base_url=self._BASE_URL,
             scope=self.settings.SCOPE.unicode_string(),
-            private_key=self.settings.PRIVATE_KEY.replace(r"\n", "\n"),
+            private_key=self.settings.PRIVATE_KEY,
             private_key_id=self.settings.PRIVATE_KEY_ID,
         )
 
@@ -35,7 +35,7 @@ class Client:
     ) -> None:
         try:
             response = await self.http_client.post(
-                url=f"{self._BASE_URL}v4/spreadsheets/{spreadsheet_id}/values:batchClear",
+                url=f"{self._BASE_URL}/v4/spreadsheets/{spreadsheet_id}/values:batchClear",
                 json={
                     "ranges": ranges,
                 },
@@ -54,7 +54,7 @@ class Client:
     ) -> models.BatchUpdateValuesResponse:
         try:
             response = await self.http_client.post(
-                url=f"{self._BASE_URL}v4/spreadsheets/{spreadsheet_id}/values:batchUpdate",
+                url=f"{self._BASE_URL}/v4/spreadsheets/{spreadsheet_id}/values:batchUpdate",
                 json={
                     "valueInputOption": "USER_ENTERED",
                     "data": [
