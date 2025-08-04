@@ -1,3 +1,4 @@
+import ast
 from dataclasses import dataclass, field
 from typing import ClassVar
 
@@ -23,7 +24,10 @@ class Client:
         self._token_data = models.TokenData(
             email=self.settings.CLIENT_EMAIL,
             scope=self.settings.SCOPE.unicode_string(),
-            private_key=self.settings.PRIVATE_KEY,
+            private_key=ast.literal_eval(self.settings.PRIVATE_KEY)
+            if self.settings.PRIVATE_KEY.startswith("'")
+            or self.settings.PRIVATE_KEY.startswith('"')
+            else self.settings.PRIVATE_KEY.encode().decode("unicode_escape"),
             private_key_id=self.settings.PRIVATE_KEY_ID,
         )
 
